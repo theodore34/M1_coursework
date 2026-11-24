@@ -1,16 +1,28 @@
+# Importing Librairies
+
 import numpy as np
 import pandas as pd
 
-
+# Hyperameters
 SEED = 0
 
+# Functions definition
 
-data = np.load("data/learning_set.npz")
-series = data["series"]  # (objects, 3, days): a [km], e, drag term [m^2/kg]
-label = data["label"]  # index into data["class_names"]; -1 where withheld
-split = data["split"]  # index into data["split_names"]: train/validation/test
-cat = pd.read_csv("data/catalogue.csv")  # one row per element set
-for object_id, rows in cat.groupby("object_id"):
-    rows = rows.sort_values("epoch_day")
-t, a = rows["epoch_day"].to_numpy(), rows["a_km"].to_numpy()
-print(t, a)
+def load_learning_set(path="data/learning_set.npz"):
+    """
+    Load the learning set and return a pandas dataframe
+    """
+    data = np.load(path)
+    df = pd.DataFrame({
+        "object_id": np.arange(len(data["label"])),
+        "label": data["label"],    
+        "split": data["split"],
+    })
+    return df.set_index("object_id"), data["class_names"], data["split_names"]
+
+df, class_names, split_names = load_learning_set()
+
+split_counts = df["split"].value_counts().sort_index()
+split_counts.index = split_names[split_counts.index]
+
+print(split_counts)
