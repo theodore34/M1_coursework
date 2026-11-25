@@ -3,8 +3,8 @@
 import numpy as np
 import pandas as pd
 
-# Hyperameters
 SEED = 0
+results = {}
 
 # Functions definition
 
@@ -20,9 +20,43 @@ def load_learning_set(path="data/learning_set.npz"):
     })
     return df.set_index("object_id"), data["class_names"], data["split_names"]
 
-df, class_names, split_names = load_learning_set()
+def question_1_1(df, class_names, split_names):
+    """
+    Answer the question 1.1
+    """
 
-split_counts = df["split"].value_counts().sort_index()
-split_counts.index = split_names[split_counts.index]
+    # Loading the data set
+    df, class_names, split_names = load_learning_set()
+    df_size = len(df)
 
-print(split_counts)
+    # Counting the train/test/valid
+    split_counts = df["split"].value_counts().sort_index()
+    split_counts.index = split_names[split_counts.index]
+
+    #Counting the object type
+    class_counts = df["label"].value_counts().sort_index()
+    class_counts.index = class_names[class_counts.index]
+
+    results["1.1a"] = split_counts["train"]
+    results["1.1b"] = split_counts["validation"]
+    results["1.1c"] = split_counts["test"]
+
+    #print(len(df)) # number of point in total
+
+def print_results():
+    """
+    Print every results cleanly
+    """
+    for key, value in results.items():
+        if isinstance(value, (float, np.floating)):
+            value = f"{value:.3g}"
+        print(f"row {key}: {value}")
+
+def main():
+    df, class_names, split_names = load_learning_set()
+    question_1_1(df, class_names, split_names)
+    print_results()
+
+
+if __name__ == "__main__":
+    main()
