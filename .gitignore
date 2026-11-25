@@ -3,6 +3,8 @@
 venv/
 env/
 
+report/*.gz
+
 # Fichiers compilés et cache Python
 __pycache__/
 *.py[cod]

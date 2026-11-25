@@ -37,7 +37,7 @@ def load_learning_set(path="data/learning_set.npz"):
 
 def question_1_1(df, split_names):
     """
-    Answer the question 1.1
+    Answer the question 1.1: counting data + dummy classifier
     """
 
     # Counting the train/test/valid
@@ -61,11 +61,20 @@ def question_1_1(df, split_names):
     results["1.1d"] = acc
     results["1.1e"] = bal_acc
 
+    return bal_acc
+
+def question_1_2(df):
+    """
+    Answer to question 1.2
+    """
+    print("Welcome to question 2")
 
 def main():
     df, class_names, split_names = load_learning_set()
-    question_1_1(df, split_names)
-    print_results()
+    #bal_acc = question_1_1(df, split_names)
+    question_1_2(df)
+
+    #print_results()
 
 
 if __name__ == "__main__":
