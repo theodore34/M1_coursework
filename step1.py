@@ -1,7 +1,9 @@
-# Importing Librairies
+# Runtime: about 1 s on Macbook
 
 import numpy as np
 import pandas as pd
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score, balanced_accuracy_score
 
 SEED = 0
 results = {}
@@ -26,22 +28,32 @@ def question_1_1(df, class_names, split_names):
     """
 
     # Loading the data set
-    df, class_names, split_names = load_learning_set()
     df_size = len(df)
 
     # Counting the train/test/valid
     split_counts = df["split"].value_counts().sort_index()
     split_counts.index = split_names[split_counts.index]
 
-    #Counting the object type
-    class_counts = df["label"].value_counts().sort_index()
-    class_counts.index = class_names[class_counts.index]
-
     results["1.1a"] = split_counts["train"]
     results["1.1b"] = split_counts["validation"]
     results["1.1c"] = split_counts["test"]
 
-    #print(len(df)) # number of point in total
+    # Majority class baseline
+    train_df = df[df["split"] == 0]
+    valid_df = df[df["split"] == 1]
+    test_df = df[df["split"] == 2]
+    class_counts = train_df["label"].value_counts(normalize=True)
+
+    
+    maj_class = class_counts.idxmax() # the class with the highest frequency within the training set
+    y_pred = np.full(len(valid_df), maj_class)
+    acc = accuracy_score(valid_df["label"], y_pred)
+    bal_acc = balanced_accuracy_score(valid_df["label"], y_pred)
+
+    results["1.1d"] = acc
+    results["1.1e"] = bal_acc
+
+    #
 
 def print_results():
     """
