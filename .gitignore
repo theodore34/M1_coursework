@@ -11,6 +11,8 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 
+assignment.pdf
+
 # Variables d'environnement et secrets (clés API, mots de passe)
 .env
 .env.*
