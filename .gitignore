@@ -2,7 +2,7 @@
 .venv/
 venv/
 env/
-
+walkthrough.ipynb
 report/*.gz
 
 # Fichiers compilés et cache Python
